@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  traefik:
+    image: traefik:v2.2.0-rc2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    networks:
+      - web
+    volumes:
+      - ./traefik.yml:/traefik.yml
+      - ./dynamic_conf.yml:/dynamic_conf.yml
+      - ./acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    container_name: traefik
+
+networks:
+  web:
+    external: true
